@@ -131,6 +131,7 @@ export const SignInWithZeroTrustAccountProvider = ({
   useEffect(() => {
     const receiveMessage = (event:MessageEvent) => {
       console.log( `Event Origin: ${event.origin}`)
+      console.log(zeroTrustClientURL)
       if (event.origin === zeroTrustClientURL) {
         console.log("Received Data from popup", event.data);
         const data = event.data;
