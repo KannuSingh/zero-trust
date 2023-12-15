@@ -1,0 +1,99 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "contract IEntryPoint",
+				"name": "_entryPoint",
+				"type": "address"
+			},
+			{
+				"internalType": "contract IZeroTrustSessionVerifier",
+				"name": "_sessionVerifier",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "accountImplementation",
+		"outputs": [
+			{
+				"internalType": "contract ZeroTrustAccount",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "pubKeyX",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "pubKeyY",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "salt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "credentialId",
+				"type": "bytes"
+			}
+		],
+		"name": "createAccount",
+		"outputs": [
+			{
+				"internalType": "contract ZeroTrustAccount",
+				"name": "ret",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "pubKeyX",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "pubKeyY",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "salt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "credentialId",
+				"type": "bytes"
+			}
+		],
+		"name": "getCounterfactualAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

@@ -1,0 +1,31 @@
+{
+  "name": "zero-trust-core-sdk",
+  "version": "0.0.1",
+  "description": "zero-trust-core sdk for zero-trust accounts",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/src/index.d.ts",
+  "type": "module",
+  "devDependencies": {
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@types/node": "20.3.2",
+    "rollup": "^3.28.1",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [],
+  "author": "Karandeep Singh",
+  "scripts": {
+    "build": "rollup -c",
+    "prepublish": "tsc"
+  },
+  "dependencies": {
+    "@ethersproject/bignumber": "^5.7.0",
+    "ethers": "^6.9.0",
+    "js-sha512": "^0.8.0",
+    "pino": "^8.16.2",
+    "poseidon-lite": "^0.2.0",
+    "snarkjs": "^0.7.0"
+  }
+}

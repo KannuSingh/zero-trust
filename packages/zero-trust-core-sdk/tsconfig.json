@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "ES2021", // Change to ES6 or ES5 based on your needs
+    "declarationDir": "dist/types",
+    "declaration": true,
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true // Enable this for compatibility with CommonJS imports
+  }
+}

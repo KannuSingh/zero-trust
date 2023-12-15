@@ -1,0 +1,14 @@
+{
+  "name": "zero-trust",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "packages/basic-nft-dapp",
+    "packages/zero-trust-accounts-ui",
+    "packages/zero-trust-core-sdk"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "^8.0.0"
+  }
+}
