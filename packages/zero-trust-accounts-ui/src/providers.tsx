@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react'
 import { SessionProvider } from './hooks/useSession'
 import React from 'react'
@@ -31,6 +32,7 @@ export default function Providers({
           <EthereumProvider>
             <SessionProvider>
               {children}
+              <Analytics/>
             </SessionProvider>
           </EthereumProvider>
         </ZeroTrustConfigProvider>
