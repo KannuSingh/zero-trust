@@ -88,7 +88,7 @@ export default function Login() {
         title: "Error retrieving assertion.",
         description: error,
         status: "error",
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
     }
@@ -104,7 +104,7 @@ export default function Login() {
       toast({
         title: verificationData.isValid ?"Authentication Passed.":"Authentication Failed",
         status: verificationData.isValid ? "success":"error",
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
       return verificationData;

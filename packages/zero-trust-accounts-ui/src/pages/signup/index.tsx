@@ -67,7 +67,7 @@ export default function Signup() {
           title: "Error creating credential.",
           description: error,
           status: "error",
-          duration: 9000,
+          duration: 3000,
           isClosable: true,
         });
       }
@@ -79,7 +79,7 @@ export default function Signup() {
           title: "Credential created.",
           description: "Your credential has been created.",
           status: "success",
-          duration: 9000,
+          duration: 3000,
           isClosable: true,
         });
         const rawIdAsBase64 = btoa(

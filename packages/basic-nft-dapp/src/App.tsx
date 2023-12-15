@@ -188,7 +188,7 @@ export default function App() {
           title: "Successfully minted DEMO NFT",
           description: "",
           status: "success",
-          duration: 5000,
+          duration: 3000,
           isClosable: true,
         })
         } else {
@@ -201,7 +201,7 @@ export default function App() {
         title: "Failed to mint DEMO NFT",
         description: "",
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       })
     }
@@ -213,7 +213,7 @@ export default function App() {
       title: message,
       description: '',
       status: "success",
-      duration: 4000,
+      duration: 3000,
       isClosable: true,
     });
   }
@@ -222,7 +222,7 @@ export default function App() {
       title: message,
       description: '',
       status: "error",
-      duration: 4000,
+      duration: 3000,
       isClosable: true,
     });
   }
@@ -236,8 +236,8 @@ export default function App() {
    }, [ onWalletDrawerClose,isLoading]);
   
   return (
-    <Container maxW="6xl" h="100vh" display="flex" justifyContent="center" alignItems="center" >
-      <Box w="375px" h="800px" bg="red.200" border="1px solid gray" borderRadius="md" overflow="hidden" position={'relative'}>
+    <Container  h={{ base: 'auto', md: '100vh' }} display="flex" justifyContent="center" alignItems="center" >
+      <Box w="415px" h="800px" bg="red.200" border="1px solid gray" borderRadius="md"  position={'relative'}>
         <Flex minWidth="max-content" p={2} alignItems="center" gap="2">
           <Box px="2">
             <Heading size="lg" fontFamily="monospace">
@@ -247,8 +247,8 @@ export default function App() {
           <Spacer />
 
           {session 
-          ?<HStack>
-            <HStack>
+          ?<HStack >
+            <HStack spacing={1} flexShrink={0}>
               <Icon aria-label="wallet" as={FaClock} />
                {timeRemaining && <Text fontSize={'sm'} >{formatTime(timeRemaining)}</Text>}
                <Icon aria-label="wallet" as={BiWalletAlt} /> 
