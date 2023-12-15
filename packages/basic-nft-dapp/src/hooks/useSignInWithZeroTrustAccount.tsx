@@ -130,6 +130,7 @@ export const SignInWithZeroTrustAccountProvider = ({
 
   useEffect(() => {
     const receiveMessage = (event:MessageEvent) => {
+      console.log( `Event Origin: ${event.origin}`)
       if (event.origin === zeroTrustClientURL) {
         console.log("Received Data from popup", event.data);
         const data = event.data;
@@ -183,10 +184,9 @@ export const SignInWithZeroTrustAccountProvider = ({
     const top = window.innerHeight / 2 - height / 2;
     const redirect_uri = window.location.origin;
     const client_id = dappId; 
-    const modifiedParams = `?client_id=${client_id}&origin=${redirect_uri}`;
     // onModalOpen()
     const popupWindow = window.open(
-      `${process.env.REACT_APP_ZERO_TRUST_CLIENT_URL}/#/authorize` + modifiedParams,
+      `${zeroTrustClientURL}/#/authorize?client_id=${client_id}&origin=${redirect_uri}`,
       'Login',
       `width=${width},height=${height},left=${left},top=${top}`
     );
