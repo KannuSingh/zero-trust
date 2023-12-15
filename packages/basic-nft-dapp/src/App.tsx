@@ -320,7 +320,7 @@ export default function App() {
                 <Avatar name='Christian Nwamba' src='https://bit.ly/code-beast' />
               </AvatarGroup>
             </HStack>
-            <Heading >Citizen 657</Heading>
+            <Heading textColor={'black'}>Citizen 657</Heading>
             <Stack spacing={4} align='center' mt={4} >
               <Stack
                 direction='column'

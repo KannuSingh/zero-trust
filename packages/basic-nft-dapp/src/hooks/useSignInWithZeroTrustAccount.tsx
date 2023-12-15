@@ -186,7 +186,7 @@ export const SignInWithZeroTrustAccountProvider = ({
     const modifiedParams = `?client_id=${client_id}&origin=${redirect_uri}`;
     // onModalOpen()
     const popupWindow = window.open(
-      `http://localhost:3002/#/authorize` + modifiedParams,
+      `${process.env.REACT_APP_ZERO_TRUST_CLIENT_URL}/#/authorize` + modifiedParams,
       'Login',
       `width=${width},height=${height},left=${left},top=${top}`
     );
