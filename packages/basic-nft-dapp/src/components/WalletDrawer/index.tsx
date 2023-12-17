@@ -70,7 +70,7 @@ const WalletDrawer = ({isWalletDrawerOpen, onWalletDrawerClose}) =>{
           bgColor="gray.800" textColor={'white'} 
           onClick={handleSignIn}
           isLoading={isLoading}
-          >SignIn w/ Zero Trust Accounts
+          >Sign In w/ Zero Trust Accounts
         </Button>
       </VStack>
     }

@@ -152,7 +152,7 @@ export const SignInWithZeroTrustAccountProvider = ({
             setSession(session);
             setLoading(false)
             setSuccess(message)
-          } else if (data.status === 401) {
+          } else if (data.status === 403) {
             const { message } = data.response;
             setError(message)
           }
@@ -202,6 +202,13 @@ export const SignInWithZeroTrustAccountProvider = ({
     setPopupWindow(popupWindow);
   };
 
+  useEffect(() =>{
+    const clearMessages = () => {
+      setError(null)
+      setSuccess(null)
+    }
+    return clearMessages
+  })
   // disconnect session removes session obj from sessionStorage
   const disconnect = () =>{
     onSessionExpired();

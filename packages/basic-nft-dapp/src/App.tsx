@@ -346,7 +346,7 @@ export default function App() {
                   <Link href='https://t.me/kdsinghsaini' target='_blank'> Karandeep</Link>
                   {` & `} 
                   <Icon as={FaTelegram}/>
-                  <Link href='https://t.me/alexanderchopan' target='_blank'> Alexander</Link>
+                  <Link href='https://t.me/alexanderchopan' target='_blank'> accountless</Link>
                 </Flex>
             </Flex>
           <Tooltip hasArrow placement='left' label="Get more info on how it works" aria-label='more information'>

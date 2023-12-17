@@ -159,8 +159,11 @@ export default function Authorize() {
   }
   const onDeny = () => {
     const denyMessage = {
+      request:'authorize',
       status:403,
-      message:"User denied authorization request"
+      response:{
+        message:"User denied authorization request"
+      }
     }
     window.opener.postMessage(denyMessage, origin);
   }
@@ -270,7 +273,7 @@ const RenderScopes = ({
   return (
     <Stack direction="column">
       {Object.entries(scopes).map(([contract, scopeList]) => (
-        <Accordion key={contract} allowToggle>
+        <Accordion key={contract} defaultIndex={[0]} allowToggle>
           <AccordionItem>
             <h2>
               <AccordionButton>
