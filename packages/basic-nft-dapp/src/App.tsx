@@ -322,7 +322,7 @@ export default function App() {
                   MintNFT
                 </Button>
                 {(txLink && session) && (
-                  <Link href={txLink} textColor={'black'} isExternal>
+                  <Link fontSize={'sm'} href={txLink} textColor={'black'} isExternal>
                     Transaction link <Icon as={BiLinkExternal} mx='2px' />
                   </Link>
                 )}
@@ -332,7 +332,7 @@ export default function App() {
           </Container>
           <Flex 
             position="absolute" 
-            bottom="40px" 
+            bottom="30px" 
             direction={'column'} 
             align={'center'} 
             w='full'
