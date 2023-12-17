@@ -1,5 +1,5 @@
 import {  useEffect, useState } from 'react';
-import {  Avatar, AvatarGroup, Box, Button, Container, Divider, Flex, HStack, Heading,Icon, Image, Link,Spacer, Spinner, Stack, Text,  Tooltip,  VStack,  useClipboard,    useDisclosure,  useToast  } from '@chakra-ui/react'
+import {  Avatar, AvatarGroup, Box, Button, Container, Divider, Flex, Grid, HStack, Heading,Icon, Image, Link,Spacer, Spinner, Stack, Text,  Tooltip,  VStack,  useClipboard,    useDisclosure,  useToast  } from '@chakra-ui/react'
 import { ChatIcon, CloseIcon,  } from "@chakra-ui/icons";
 import { useSignInWithZeroTrustAccount, useZeroTrustAccountSession } from './hooks';
 import { formatAddress, formatTime, getNonceValue } from './utils';
@@ -237,7 +237,7 @@ export default function App() {
   
   return (
     <Container  h={{ base: 'auto', md: '100vh' }} display="flex" justifyContent="center" alignItems="center" >
-      <Box w="415px" h="800px" bg="red.200" border="1px solid gray" borderRadius="md"  position={'relative'}>
+      <Box w="400px" h="800px" bg="red.200" border="1px solid gray" borderRadius="md" overflow={'auto'}  position={'relative'}>
         <Flex minWidth="max-content" p={2} alignItems="center" gap="2">
           <Box px="2">
             <Heading size="lg" fontFamily="monospace">
@@ -247,26 +247,18 @@ export default function App() {
           <Spacer />
 
           {session 
-          ?<HStack >
-            <HStack spacing={1} flexShrink={0}>
-              <Icon aria-label="wallet" as={FaClock} />
-               {timeRemaining && <Text fontSize={'sm'} >{formatTime(timeRemaining)}</Text>}
-               <Icon aria-label="wallet" as={BiWalletAlt} /> 
-              <Text fontSize={'sm'}>
-                {formatAddress(userAddress)} 
-              </Text>
-              <Tooltip hasArrow label={hasCopied ? 'Copied' : 'Copy'}>
-                <Button size="sm" variant={'ghost'}  onClick={handleCopyWalletAddress}>
-                  <Icon w={3} h={3} as={FaCopy} />
-                </Button>
-              </Tooltip>
-            </HStack>
-            <HStack spacing="1">
+          ?
+            <HStack textColor={'black'} spacing={1} flexShrink={0}>
+              <CustomTimeComponent timeRemaining={timeRemaining} />
+              <WalletAddressComponent
+                userAddress={userAddress}
+                handleCopyWalletAddress={handleCopyWalletAddress}
+                hasCopied={hasCopied}
+              />
               <Button size="sm" colorScheme={'red'} onClick={disconnect}>
                 <Icon w={3} h={3} as={FaPowerOff} />
               </Button>
             </HStack>
-          </HStack>
           :<Button
           bgColor="black"
           _hover={{
@@ -344,12 +336,13 @@ export default function App() {
                   MintNFT
                 </Button>
                 {txLink && (
-                  <Link href={txLink} isExternal>
+                  <Link href={txLink} textColor={'black'} isExternal>
                     Transaction link <Icon as={BiLinkExternal} mx='2px' />
                   </Link>
                 )}
               </Stack>
             </Stack>
+            <StepsComponent />
           </Container>
         </Box>
 
@@ -414,3 +407,58 @@ export default function App() {
     </Container>
   )
 }
+
+const CustomTimeComponent = ({ timeRemaining }) => (
+  <Box minWidth="80px">
+    <HStack spacing={1}>
+      <Icon aria-label="wallet" as={FaClock} />
+      {timeRemaining && <Text w={'100%'} justifyContent={'right'} fontSize="sm">{formatTime(timeRemaining)}</Text>}
+    </HStack>
+  </Box>
+);
+
+const WalletAddressComponent = ({ userAddress, handleCopyWalletAddress, hasCopied }) => (
+  <Box minWidth="150px">
+    <HStack spacing={1}>
+      <Icon aria-label="wallet" as={BiWalletAlt} /> 
+      <Text fontSize="sm">{formatAddress(userAddress)}</Text>
+      <Tooltip hasArrow label={hasCopied ? 'Copied' : 'Copy'}>
+          <Box><Icon w={3} h={3} onClick={handleCopyWalletAddress} as={FaCopy} /></Box>
+      </Tooltip>
+    </HStack>
+  </Box>
+);
+
+const StepCard = ({ title, description }) => (
+  <Box p={4} borderWidth="1px" borderRadius="md" borderColor={'black'}>
+    <Text fontSize={'sm'} fontWeight="bold" mb={2}>{title}</Text>
+    <Text fontSize={'sm'}>{description}</Text>
+  </Box>
+);
+
+const StepsComponent = () => (
+  <Grid
+    templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+    gap={4}
+    p={4}
+    
+    textColor={'black'}
+  >
+    <StepCard
+      title="Step 1: Create Account"
+      description="User interacts with dapp website, clicks 'Connect Wallet' or 'Sign In.' Existing users sign in, new users create an account. User grants dapp access to ZeroTrust account for NFT minting."
+    />
+    <StepCard
+      title="Step 2: Authorize Dapp"
+      description="User authorizes the dapp for that session and specifies the allowed scope. Signing the user operation records session details on the blockchain."
+    />
+    <StepCard
+      title="Step 3: Mint NFT"
+      description="User goes to the dapp and uses the authorized ZeroTrust account. They click 'mint' and successfully create the NFT."
+    />
+    <StepCard
+      title="Under the Hood"
+      description="We tie the user's selected account name to a passkey, securely store it in the browser, and derive a counterfactual smart contract address from this metadata. A sessionID is created to define the scope of activity. It is saved onchain by signing a transaction using the passkey. Instead of signing, the user submits a proof for operations, all on their device."
+    />
+  </Grid>
+);
