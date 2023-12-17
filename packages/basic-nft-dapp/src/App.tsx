@@ -348,6 +348,7 @@ export default function App() {
                   <Icon as={FaTelegram}/>
                   <Link href='https://t.me/alexanderchopan' target='_blank'> accountless</Link>
                 </Flex>
+              <Text fontSize={'sm'}>Powered By: Pimlico</Text>
             </Flex>
           <Tooltip hasArrow placement='left' label="Get more info on how it works" aria-label='more information'>
             <IconButton
