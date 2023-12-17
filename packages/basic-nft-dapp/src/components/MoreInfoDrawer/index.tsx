@@ -1,5 +1,6 @@
 import { CloseIcon } from "@chakra-ui/icons";
-import { Box, Button, Grid, Icon, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Grid, HStack, Icon, Link, Text, VStack } from "@chakra-ui/react";
+import { FaGithub, FaRegFile } from "react-icons/fa";
 
 const StepCard = ({ title, description }) => (
   <Box p={1} borderWidth="1px" borderRadius="md" borderColor={'black'}>
@@ -45,12 +46,12 @@ const MoreInfoDrawer = ({isMoreInfoDrawerOpen,onMoreInfoDrawerClose}) => {
     <Grid
       templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
       gap={2}
-      p={4}
+      p={1}
       
       textColor={'black'}
     >
       <StepCard
-        title="Step 1: Create Account"
+        title="Step 1: Create ZeroTrust Account"
         description="User interacts with dapp website, clicks 'Connect Wallet' or 'Sign In.' Existing users sign in, new users create an account. User grants dapp access to ZeroTrust account for NFT minting."
       />
       <StepCard
@@ -66,6 +67,23 @@ const MoreInfoDrawer = ({isMoreInfoDrawerOpen,onMoreInfoDrawerClose}) => {
         description="We tie the user's selected account name to a passkey, securely store it in the browser, and derive a counterfactual smart contract address from this metadata. A sessionID is created to define the scope of activity. It is saved onchain by signing a transaction using the passkey. Instead of signing, the user submits a proof for operations, all on their device."
       />
     </Grid>
+    <HStack textColor={'black'}>
+     <Icon as={FaRegFile}/>
+      <Link  
+      href={'https://smartproducts.pimlico.io/initiatives'} 
+      target="_blank">
+        ZeroTrust Docs
+      </Link>
+    </HStack>
+    <HStack textColor={'black'}>
+     <Icon as={FaGithub}/>
+      <Link  
+      href={'https://github.com/KannuSingh/zero-trust'} 
+      target="_blank">
+        Github
+      </Link>
+    </HStack>
+    
   </VStack>
     
   </Box>)

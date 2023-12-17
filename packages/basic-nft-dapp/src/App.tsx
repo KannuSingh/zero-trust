@@ -1,6 +1,6 @@
 import {  useEffect, useState } from 'react';
-import {  Avatar, AvatarGroup, Box, Button, Container, Divider, Flex, Grid, HStack, Heading,Icon, IconButton, Image, Link,Spacer,  Stack, Text,  Tooltip,   useClipboard,    useDisclosure,  useToast  } from '@chakra-ui/react'
-import { ChatIcon, InfoIcon, InfoOutlineIcon,  } from "@chakra-ui/icons";
+import {  Avatar, AvatarGroup, Box, Button, Container, Divider, Flex, HStack, Heading,Icon, IconButton, Image, Link,Spacer,  Stack, Text,  Tooltip,   useClipboard,    useDisclosure,  useToast  } from '@chakra-ui/react'
+import { ChatIcon, InfoOutlineIcon,  } from "@chakra-ui/icons";
 import { useSignInWithZeroTrustAccount, useZeroTrustAccountSession } from './hooks';
 import { formatAddress, formatTime, getNonceValue } from './utils';
 import { logger } from './config/logger';
@@ -343,7 +343,7 @@ export default function App() {
               </Text>
                 <Flex align={'center'} gap={1}>
                   <Icon as={FaTelegram}/>
-                  <Link href='https://t.me/kdsinghsaini'> Karandeep</Link>
+                  <Link href='https://t.me/kdsinghsaini' target='_blank'> Karandeep</Link>
                   {` & `} 
                   <Icon as={FaTelegram}/>
                   <Link href='https://t.me/alexanderchopan' target='_blank'> Alexander</Link>
