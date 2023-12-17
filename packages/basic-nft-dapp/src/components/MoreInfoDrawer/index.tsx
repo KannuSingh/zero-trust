@@ -64,7 +64,7 @@ const MoreInfoDrawer = ({isMoreInfoDrawerOpen,onMoreInfoDrawerClose}) => {
       />
       <StepCard
         title="Under the Hood"
-        description="User's selected account name is tied to a passkey, securely store it in the browser, and counterfactual account address is derive from this metadata. A sessionID is created to define the scope of activity. It is saved onchain by signing a transaction using the passkey. Session details are passed to the Dapp which generate zkproof instead of signing the user operation, all on their client device."
+        description="User's selected account name is tied to a passkey, securely store it in the browser, and counterfactual account address is derive from this metadata. A sessionID is created to define the scope of activity. It is saved onchain by signing a transaction using the passkey. Session details are passed to the Dapp which generate zkproof instead of signing the user operation, all on client device."
       />
     </Grid>
     <HStack textColor={'black'}>
