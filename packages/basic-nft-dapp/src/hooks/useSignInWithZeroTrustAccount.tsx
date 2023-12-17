@@ -44,10 +44,16 @@ export const useSignInWithZeroTrustAccount = (onSuccess?: OnSuccessCallback, onE
 
   useEffect(() => {
     onSuccessRef.current = onSuccess;
+    return () => {
+      onSuccessRef.current = undefined; // Clear the ref when unmounted
+    };
   }, [onSuccess]);
 
   useEffect(() => {
     onErrorRef.current = onError;
+    return () => {
+      onErrorRef.current = undefined; // Clear the ref when unmounted
+    };
   }, [onError]);
 
   useEffect(() => {
@@ -95,7 +101,9 @@ export const SignInWithZeroTrustAccountProvider = ({
     setSession(null);
     setIdentity(null);
     setUsername(null);
-  }, [setIdentity, setSession,setUsername]);
+    setSuccess(null);
+    setError(null)
+  }, [setIdentity, setSession,setUsername,setSuccess,setError]);
 
   // check if popupWindow is closed
   useEffect(() => {
@@ -196,7 +204,7 @@ export const SignInWithZeroTrustAccountProvider = ({
 
   // disconnect session removes session obj from sessionStorage
   const disconnect = () =>{
-    setSession(null);
+    onSessionExpired();
   }
 
 	const value = {

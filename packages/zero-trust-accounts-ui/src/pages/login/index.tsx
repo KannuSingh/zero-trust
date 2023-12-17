@@ -43,7 +43,7 @@ export default function Login() {
         let verificationData:Verification;
         if (sanitizedInput.endsWith('@zt.eth')) {
           dataSource= 'onchain'
-          // consider inputValue as a username and get details from onchain 
+          // consider inputValue as a username and get details from onchain via registry
 
 
         } else {
@@ -57,6 +57,8 @@ export default function Login() {
             const publicKeyAsHexString = localPasskeyMetaInfoMap[sanitizedInput].publicKeyAsHex
             verificationData = await verifyCredentials(publicKeyAsHexString,userCredentials)
             logger.info("(🪪,✅) Verification", verificationData);
+          }else{
+            setErrorMessage("User not found.")
           }
         }
         console.log('search param in login page',searchParams.get('redirect_url'))
@@ -152,10 +154,11 @@ export default function Login() {
                   
                   <FormControl>
                     <FormLabel htmlFor="nameOrUsername">Name or Username</FormLabel>
-                    <InputGroup>
-                      <Input id="nameOrUsername" value={nameOrUsername}
-                      onChange={(e) => setNameOrUsername(e.target.value.replace(/[^a-zA-Z0-9_@]/g, ''))} type="text" />
-                    </InputGroup>
+                    <Input id="nameOrUsername" value={nameOrUsername}
+                    onChange={(e) => setNameOrUsername(e.target.value.replace(/[^a-zA-Z0-9_@]/g, ''))} type="text" />
+                    {errorMessage  && (
+                        <Text color="red.500">{errorMessage}</Text>
+                      )}
                   </FormControl>
                 </Stack>
                 <Stack spacing="6">

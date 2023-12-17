@@ -1,6 +1,6 @@
 import {  useEffect, useState } from 'react';
-import {  Avatar, AvatarGroup, Box, Button, Container, Divider, Flex, Grid, HStack, Heading,Icon, Image, Link,Spacer, Spinner, Stack, Text,  Tooltip,  VStack,  useClipboard,    useDisclosure,  useToast  } from '@chakra-ui/react'
-import { ChatIcon, CloseIcon,  } from "@chakra-ui/icons";
+import {  Avatar, AvatarGroup, Box, Button, Container, Divider, Flex, Grid, HStack, Heading,Icon, IconButton, Image, Link,Spacer,  Stack, Text,  Tooltip,   useClipboard,    useDisclosure,  useToast  } from '@chakra-ui/react'
+import { ChatIcon, InfoIcon, InfoOutlineIcon,  } from "@chakra-ui/icons";
 import { useSignInWithZeroTrustAccount, useZeroTrustAccountSession } from './hooks';
 import { formatAddress, formatTime, getNonceValue } from './utils';
 import { logger } from './config/logger';
@@ -10,7 +10,9 @@ import { getDemoNFTContract, getEntryPointContract } from './appContracts';
 import { BiLinkExternal, BiWalletAlt } from 'react-icons/bi';
 import { ZeroTrustAccount, ZeroTrustSession } from 'zero-trust-core-sdk';
 import { generateProof } from './appContracts/zkSessionAccountProof';
-import { FaClock, FaCopy, FaPowerOff, FaShare } from 'react-icons/fa';
+import { FaClock, FaCopy, FaPowerOff, FaShare, FaTelegram } from 'react-icons/fa';
+import WalletDrawer from './components/WalletDrawer';
+import MoreInfoDrawer from './components/MoreInfoDrawer';
 
 function padArrayWithZeros(array: bigint[]): bigint[] {
   const paddedArray = [...array];
@@ -28,6 +30,7 @@ export default function App() {
   const { onCopy, setValue:setWalletAddress, hasCopied } = useClipboard("");
   const {session,timeRemaining,identity,userAddress,authorizedScopes} = useZeroTrustAccountSession()
   const {isOpen:isWalletDrawerOpen,onOpen:onWalletDrawerOpen,onClose:onWalletDrawerClose} = useDisclosure()
+  const {isOpen:isMoreInfoDrawerOpen,onOpen:onMoreInfoDrawerOpen,onClose:onMoreInfoDrawerClose} = useDisclosure()
   
   const handleCopyWalletAddress = () => {
     setWalletAddress(userAddress)
@@ -208,26 +211,8 @@ export default function App() {
     setMintLoading(false)
   };
   
-  const onSuccessfullSignInCallback = (message:string) =>{
-    toast({
-      title: message,
-      description: '',
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-  }
-  const onErrorSignInCallback = (message:string) =>{
-    toast({
-      title: message,
-      description: '',
-      status: "error",
-      duration: 3000,
-      isClosable: true,
-    });
-  }
 
-  const { isLoading,  handleSignIn,  disconnect,  } = useSignInWithZeroTrustAccount(onSuccessfullSignInCallback,onErrorSignInCallback)
+  const { isLoading,  disconnect,  } = useSignInWithZeroTrustAccount()
 
   useEffect(() => {
     if(!isLoading){
@@ -237,7 +222,7 @@ export default function App() {
   
   return (
     <Container  h={{ base: 'auto', md: '100vh' }} display="flex" justifyContent="center" alignItems="center" >
-      <Box w="400px" h="800px" bg="red.200" border="1px solid gray" borderRadius="md" overflow={'auto'}  position={'relative'}>
+      <Box w="400px" minH="750px"  bg="red.200" border="1px solid gray" borderRadius="md"   position={'relative'}>
         <Flex minWidth="max-content" p={2} alignItems="center" gap="2">
           <Box px="2">
             <Heading size="lg" fontFamily="monospace">
@@ -277,7 +262,7 @@ export default function App() {
         <Divider orientation="horizontal" />
 
         {/* body */}
-        <Box overflow="scroll" h="800px" >
+        <Box overflow="scroll" minH="650px" h="700px" >
           <Container  maxW="3xl" h="100%" p={4}>
             <Box mt={4} display="flex" justifyContent="center" alignItems="center">
               <Image objectFit="cover" maxW="100%" maxH="calc(100% - 2rem)" src="citizen657.png" alt="Citizen 657" />
@@ -304,12 +289,12 @@ export default function App() {
                 </Button>
               </HStack>
               <Spacer/>
-              <AvatarGroup size='sm' borderColor={'black'} max={2}>
+              <AvatarGroup size='sm' textColor={'black'} borderColor={'black'} max={2}>
                 <Avatar name='Ryan Florence' src='https://bit.ly/ryan-florence' />
                 <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' />
-                <Avatar name='Kent Dodds' src='https://bit.ly/kent-c-dodds' />
-                <Avatar name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />
-                <Avatar name='Christian Nwamba' src='https://bit.ly/code-beast' />
+                <Avatar name='Kent Dodds' />
+                <Avatar name='Prosper Otemuyiwa' />
+                <Avatar name='Christian Nwamba'  />
               </AvatarGroup>
             </HStack>
             <Heading textColor={'black'}>Citizen 657</Heading>
@@ -320,6 +305,7 @@ export default function App() {
                 align='center'
                 position='relative'
                 w={'100%'}
+                
               >
                 <Button
                   w={'100%'}
@@ -335,78 +321,66 @@ export default function App() {
                 >
                   MintNFT
                 </Button>
-                {txLink && (
+                {(txLink && session) && (
                   <Link href={txLink} textColor={'black'} isExternal>
                     Transaction link <Icon as={BiLinkExternal} mx='2px' />
                   </Link>
                 )}
               </Stack>
             </Stack>
-            <StepsComponent />
+            
           </Container>
+          <Flex 
+            position="absolute" 
+            bottom="40px" 
+            direction={'column'} 
+            align={'center'} 
+            w='full'
+            textColor={'black'} 
+            justify={'center'}>
+              <Text >
+                Developed by
+              </Text>
+                <Flex align={'center'} gap={1}>
+                  <Icon as={FaTelegram}/>
+                  <Link href='https://t.me/kdsinghsaini'> Karandeep</Link>
+                  {` & `} 
+                  <Icon as={FaTelegram}/>
+                  <Link href='https://t.me/alexanderchopan' target='_blank'> Alexander</Link>
+                </Flex>
+            </Flex>
+          <Tooltip hasArrow placement='left' label="Get more info on how it works" aria-label='more information'>
+            <IconButton
+              aria-label='more information'
+              icon={<InfoOutlineIcon />}
+              position="absolute"
+              bottom="10px"
+              right="10px"
+              bgColor="black"
+              textColor="white"
+              rounded="full"
+              _hover={{
+                bgColor:'gray.800'
+              }}
+              px={3}
+              py={1}
+              onClick={onMoreInfoDrawerOpen}
+              />
+            </Tooltip>
+            
+            
         </Box>
 
-      {/* Drawer */}
-      {isWalletDrawerOpen && (
-        <>
-          <Box
-            position="absolute"
-            bottom={0}
-            left={0}
-            right={0}
-            zIndex={10}
-            bg="white"
-            boxShadow="lg"
-            p={4}
-            mx={1}
-            bgColor={'red.300'}
-            roundedTop={'10%'}
-            maxHeight="50vh"
-            overflowY="auto"
-            style={isWalletDrawerOpen ? { transition: "height 0.6s ease-in-out, opacity 0.6s ease-in-out", opacity: 1, height: "50vh" } : {}}
-          >
-            <Box
-            position="absolute"
-            zIndex={10}
-            top={3}
-            right={4}
-          >
-            <Button
-              size="sm"
-              onClick={onWalletDrawerClose}
-              bg="transparent"
-              _hover={{ bg: "transparent" }}
-            >
-              <Icon as={CloseIcon} boxSize={4} />
-            </Button>
-          </Box>
-            {isLoading ?
-              <Flex w={'full'} h={'full'} justify={'center'} align={'center'}>
-                  <Spinner size='xl' />
-              </Flex>
-              :<VStack w={'full'}>
-                <Text mb={4}>Log In or Sign Up</Text>
-                <Button isDisabled={true} mb={4} w={'full'}  _hover={{  bg: 'black', }}  bgColor="black"  textColor={'white'}  >Connect MetaMask</Button>
+        {/* Drawer */}
+      {isWalletDrawerOpen && <WalletDrawer isWalletDrawerOpen={isWalletDrawerOpen} onWalletDrawerClose={onWalletDrawerClose} />}
+      {isMoreInfoDrawerOpen && <MoreInfoDrawer isMoreInfoDrawerOpen={isMoreInfoDrawerOpen} onMoreInfoDrawerClose={onMoreInfoDrawerClose} />}
 
-                <Button isDisabled={true} mb={4} w={'full'} bgColor="black"  _hover={{  bg: 'black', }} textColor={'white'}  >Continue with email</Button>
-
-                <Button mb={4} w={'full'}
-                  _hover={{  bg: 'black', }} 
-                  bgColor="gray.800" textColor={'white'} 
-                  onClick={handleSignIn}
-                  isLoading={isLoading}
-                  >SignIn w/ Zero Trust Accounts
-                </Button>
-              </VStack>
-            }
-          </Box>
-        </>
-      )}
 
       </Box>
     </Container>
   )
 }
+
 
 const CustomTimeComponent = ({ timeRemaining }) => (
   <Box minWidth="80px">
@@ -427,38 +401,4 @@ const WalletAddressComponent = ({ userAddress, handleCopyWalletAddress, hasCopie
       </Tooltip>
     </HStack>
   </Box>
-);
-
-const StepCard = ({ title, description }) => (
-  <Box p={4} borderWidth="1px" borderRadius="md" borderColor={'black'}>
-    <Text fontSize={'sm'} fontWeight="bold" mb={2}>{title}</Text>
-    <Text fontSize={'sm'}>{description}</Text>
-  </Box>
-);
-
-const StepsComponent = () => (
-  <Grid
-    templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
-    gap={4}
-    p={4}
-    
-    textColor={'black'}
-  >
-    <StepCard
-      title="Step 1: Create Account"
-      description="User interacts with dapp website, clicks 'Connect Wallet' or 'Sign In.' Existing users sign in, new users create an account. User grants dapp access to ZeroTrust account for NFT minting."
-    />
-    <StepCard
-      title="Step 2: Authorize Dapp"
-      description="User authorizes the dapp for that session and specifies the allowed scope. Signing the user operation records session details on the blockchain."
-    />
-    <StepCard
-      title="Step 3: Mint NFT"
-      description="User goes to the dapp and uses the authorized ZeroTrust account. They click 'mint' and successfully create the NFT."
-    />
-    <StepCard
-      title="Under the Hood"
-      description="We tie the user's selected account name to a passkey, securely store it in the browser, and derive a counterfactual smart contract address from this metadata. A sessionID is created to define the scope of activity. It is saved onchain by signing a transaction using the passkey. Instead of signing, the user submits a proof for operations, all on their device."
-    />
-  </Grid>
 );
