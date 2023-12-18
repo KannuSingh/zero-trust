@@ -139,7 +139,6 @@ export default function Authorize() {
               message:error
             }
           }
-          
         }
         if(response && !response.success){
             message = {
@@ -149,7 +148,8 @@ export default function Authorize() {
                 message:"Operation reverted."
               }
             }
-            return 
+            setIsLoading(false)
+            window.opener.postMessage(message, origin);
         }
         if(response && response.success){
           message = {
@@ -163,10 +163,9 @@ export default function Authorize() {
               session:session
             }
           }
+          setIsLoading(false)
+          window.opener.postMessage(message, origin);
         }
-        setIsLoading(false)
-        window.opener.postMessage(message, origin);
-        return
       }
       
     }catch(e){
