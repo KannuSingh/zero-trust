@@ -160,6 +160,13 @@ export default function Authorize() {
       window.opener.postMessage(message, origin);
     }catch(e){
       setIsLoading(false);
+      message = {
+        status:401,
+        request:'authorize',
+        response:{
+          message:"Failed authorization request"
+        }
+      }
       window.opener.postMessage(message, origin);
     }
     
