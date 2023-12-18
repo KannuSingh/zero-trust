@@ -89,73 +89,80 @@ export default function Authorize() {
 
 
   const onAllow = async () =>{
-    setIsLoading(true)
-    // Check if any scope is selected
-    const isScopeSelected = Object.keys(selectedScopes).length > 0 && Object.keys(selectedScopes).some((contract) => selectedScopes[contract].length > 0);
     let message
-    if (isScopeSelected) {
-      // Scope is selected, 
-      // need to generate session commitment
-      // to generate session commitment use the ZeroTrustSession passing the scope
-      const zeroTrustSession  = new ZeroTrustSession(selectedScopes)
-      // Get the passkey details for the local user who is claiming the username
-      const publicKey = Passkey.hex2buf(localPasskeyMetaInfoMap[user].publicKeyAsHex);
-      const publicKeyAsCryptoKey = await Passkey.importPublicKeyAsCryptoKey( publicKey );
-      const [pubKeyX,pubKeyY] = await Passkey.getPublicKeyXYCoordinate(publicKeyAsCryptoKey)
-      const credentialId = ethers.toUtf8Bytes(localPasskeyMetaInfoMap[user].credentialId)
-      
-      //use zerotrust account to execute the claimUsernameCalldata
-      const passkeyMetaInfo= {
-        pubKeyX,
-        pubKeyY,
-        salt:0,
-        credentialId
-      }
-      logger.debug(passkeyMetaInfo)
-      const sessionStartTimeDate = new Date(Date.now());
-      const sessionEndTimeDate = (new Date( Date.now() + sessionTimeInterval*60*1000))
-      const sessionStartTime = Math.round(sessionStartTimeDate.getTime()/1000)
-      const sessionExpiry = Math.round(sessionEndTimeDate.getTime()/1000)
-      const zerotrustAccount = new ZeroTrustAccount(ethereumProvider,entryPointAddress,accountFactoryAddress,passkeyMetaInfo)
-      const session :ISessionAccount.SessionStruct= {
-          allowedContracts:Object.keys(selectedScopes).length,
-          allowedInactiveDuration:0,
-          extendWithInactiveDuration:false,
-          sessionCommitment:zeroTrustSession.commitment.toString(),
-          validAfter:sessionStartTime,
-          validUntil:sessionExpiry
-      }
-      logger.debug(session)
-      const {response,error} = await zerotrustAccount.createSession(clientId,session,bundlerProvider,paymasterProvider);
-      console.log(response)
-      console.log(error)
-      console.log(`https://goerli.basescan.org/tx/${response.receipt.transactionHash}`)
-      if(error || !response.success){
-          message = {
-            status:401,
-            request:'authorize',
-            response:{
-              message:"Failed authorization request"
+    
+    try{
+      setIsLoading(true)
+      // Check if any scope is selected
+      const isScopeSelected = Object.keys(selectedScopes).length > 0 && Object.keys(selectedScopes).some((contract) => selectedScopes[contract].length > 0);
+      if (isScopeSelected) {
+        // Scope is selected, 
+        // need to generate session commitment
+        // to generate session commitment use the ZeroTrustSession passing the scope
+        const zeroTrustSession  = new ZeroTrustSession(selectedScopes)
+        // Get the passkey details for the local user who is claiming the username
+        const publicKey = Passkey.hex2buf(localPasskeyMetaInfoMap[user].publicKeyAsHex);
+        const publicKeyAsCryptoKey = await Passkey.importPublicKeyAsCryptoKey( publicKey );
+        const [pubKeyX,pubKeyY] = await Passkey.getPublicKeyXYCoordinate(publicKeyAsCryptoKey)
+        const credentialId = ethers.toUtf8Bytes(localPasskeyMetaInfoMap[user].credentialId)
+        
+        //use zerotrust account to execute the claimUsernameCalldata
+        const passkeyMetaInfo= {
+          pubKeyX,
+          pubKeyY,
+          salt:0,
+          credentialId
+        }
+        logger.debug(passkeyMetaInfo)
+        const sessionStartTimeDate = new Date(Date.now());
+        const sessionEndTimeDate = (new Date( Date.now() + sessionTimeInterval*60*1000))
+        const sessionStartTime = Math.round(sessionStartTimeDate.getTime()/1000)
+        const sessionExpiry = Math.round(sessionEndTimeDate.getTime()/1000)
+        const zerotrustAccount = new ZeroTrustAccount(ethereumProvider,entryPointAddress,accountFactoryAddress,passkeyMetaInfo)
+        const session :ISessionAccount.SessionStruct= {
+            allowedContracts:Object.keys(selectedScopes).length,
+            allowedInactiveDuration:0,
+            extendWithInactiveDuration:false,
+            sessionCommitment:zeroTrustSession.commitment.toString(),
+            validAfter:sessionStartTime,
+            validUntil:sessionExpiry
+        }
+        logger.debug(session)
+        const {response,error} = await zerotrustAccount.createSession(clientId,session,bundlerProvider,paymasterProvider);
+        console.log(response)
+        console.log(error)
+        console.log(`https://goerli.basescan.org/tx/${response.receipt.transactionHash}`)
+        if(error || !response.success){
+            message = {
+              status:401,
+              request:'authorize',
+              response:{
+                message:"Failed authorization request"
+              }
             }
-          }
-      }else{
-          message = {
-            status:200,
-            request:'authorize',
-            response:{
-              message:"User Successfully authorized the request",
-              userAccountAddress:await zerotrustAccount.getCounterfactualAccountAddress(),
-              sessionIdentity:zeroTrustSession.toIdentityString(),
-              authorizedScope: selectedScopes,
-              session:session
+        }else{
+            message = {
+              status:200,
+              request:'authorize',
+              response:{
+                message:"User Successfully authorized the request",
+                userAccountAddress:await zerotrustAccount.getCounterfactualAccountAddress(),
+                sessionIdentity:zeroTrustSession.toIdentityString(),
+                authorizedScope: selectedScopes,
+                session:session
+              }
             }
-          }
-          
-      }
+            
+        }
 
+      }
+      setIsLoading(false)
+      window.opener.postMessage(message, origin);
+    }catch(e){
+      setIsLoading(false);
+      window.opener.postMessage(message, origin);
     }
-    setIsLoading(false)
-    window.opener.postMessage(message, origin);
+    
   }
   const onDeny = () => {
     const denyMessage = {
