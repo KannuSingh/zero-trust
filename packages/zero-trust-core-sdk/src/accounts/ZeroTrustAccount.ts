@@ -328,14 +328,18 @@ export class ZeroTrustAccount {
 							userOperation,
 							entryPointContractAddress
 						]);
-		
-						let receipt = null;
-						while (receipt === null) {
-							await new Promise((resolve) => setTimeout(resolve, 1000));
-							receipt = await bundlerProvider.send("eth_getUserOperationReceipt", [userOperationHash]);
+						if(userOperationHash){
+							let receipt = null;
+							while (receipt === null) {
+								logger.debug('wating for receipt...')
+								await new Promise((resolve) => setTimeout(resolve, 1000));
+								receipt = await bundlerProvider.send("eth_getUserOperationReceipt", [userOperationHash]);
+							}
+							logger.debug(receipt)
+							return { error: null, response: receipt };
+						}else{
+							return { error: 'Some error occurred on submitting user operation', response: null };
 						}
-						logger.debug(receipt)
-						return { error: null, response: receipt };
 					} else {
 						const errorMessage = `Failed to generate passkey signature: ${error}`;
 						return { error: errorMessage, response: null };
