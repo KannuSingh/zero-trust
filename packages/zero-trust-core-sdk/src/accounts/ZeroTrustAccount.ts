@@ -348,8 +348,8 @@ export class ZeroTrustAccount {
 					return { error: 'Invalid PaymasterAndData.', response: null };
 				}
 			} catch (error) {
-				console.error('Error executing the transaction:', error);
-				return { error: 'Error executing the transaction', response: null };
+				console.error('Error occurred while creating the session', error);
+				return { error: 'Error occurred while creating the session', response: null };
 			}
 		}
 

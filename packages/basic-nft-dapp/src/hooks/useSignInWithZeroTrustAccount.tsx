@@ -155,6 +155,9 @@ export const SignInWithZeroTrustAccountProvider = ({
           } else if (data.status === 403) {
             const { message } = data.response;
             setError(message)
+          } else if (data.status === 401) {
+            const { message } = data.response;
+            setError(message)
           }
           if (popupWindow) {
             popupWindow.close();

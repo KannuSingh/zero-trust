@@ -131,42 +131,53 @@ export default function Authorize() {
         const {response,error} = await zerotrustAccount.createSession(clientId,session,bundlerProvider,paymasterProvider);
         console.log(response)
         console.log(error)
-        console.log(`https://goerli.basescan.org/tx/${response.receipt.transactionHash}`)
-        if(error || !response.success){
+        if(error){
+          message = {
+            status:401,
+            request:'authorize',
+            response:{
+              message:error
+            }
+          }
+          
+        }
+        if(response && !response.success){
             message = {
               status:401,
               request:'authorize',
               response:{
-                message:"Failed authorization request"
+                message:"Operation reverted."
               }
             }
-        }else{
-            message = {
-              status:200,
-              request:'authorize',
-              response:{
-                message:"User Successfully authorized the request",
-                userAccountAddress:await zerotrustAccount.getCounterfactualAccountAddress(),
-                sessionIdentity:zeroTrustSession.toIdentityString(),
-                authorizedScope: selectedScopes,
-                session:session
-              }
-            }
-            
+            return 
         }
-
+        if(response && response.success){
+          message = {
+            status:200,
+            request:'authorize',
+            response:{
+              message:"User Successfully authorized the request",
+              userAccountAddress:await zerotrustAccount.getCounterfactualAccountAddress(),
+              sessionIdentity:zeroTrustSession.toIdentityString(),
+              authorizedScope: selectedScopes,
+              session:session
+            }
+          }
+        }
+        setIsLoading(false)
+        window.opener.postMessage(message, origin);
+        return
       }
-      setIsLoading(false)
-      window.opener.postMessage(message, origin);
+      
     }catch(e){
-      setIsLoading(false);
       message = {
         status:401,
         request:'authorize',
         response:{
-          message:"Failed authorization request"
+          message:`Internal Error ${e.message}`
         }
       }
+      setIsLoading(false);
       window.opener.postMessage(message, origin);
     }
     
